@@ -36,7 +36,9 @@ module.exports = (robot) ->
             _channels[channel] or= {}
             ctx = _channels[channel]
         robot.logger.debug "hubot-cc: creating / updating an alias (\"#{alias}\")"
-        ctx[alias] = users
+        ctx[alias] = users.filter((u) ->
+            u.trim().length > 1
+        )
         _saveAliases()
 
     _getMentions = (alias, channel = false) ->
@@ -73,6 +75,7 @@ module.exports = (robot) ->
         alias = res.match[1]
         delete _global[alias] if _global[alias]?
         delete _channels[channel][alias] if _channels[channel]?[alias]?
+        _saveAliases()
         res.reply "Removed @#{alias} from \"#{channel}\", and the global context."
 
     robot.respond /cc list/i, id: "cc.list", (res) ->
