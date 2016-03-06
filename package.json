@@ -1,28 +1,21 @@
 {
   "name": "hubot-cc",
   "description": "A Hubot script for defining aliases to easily @mention groups of people in a room or a global context.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Ian Lai <os@fyianlai.com>",
   "license": "MIT",
-
   "keywords": "hubot, hubot-scripts, aliases, mentions, groups, rooms",
-
   "repository": {
     "type": "git",
     "url": "git://github.com/ClaudeBot/hubot-cc.git"
   },
-
   "bugs": {
     "url": "https://github.com/ClaudeBot/hubot-cc/issues"
   },
-
-  "dependencies": {
-  },
-
+  "dependencies": {},
   "peerDependencies": {
     "hubot": "2.x"
   },
-
   "devDependencies": {
     "chai": "^3.4.0",
     "coffee-script": "^1.10.0",
@@ -37,9 +30,7 @@
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   },
-
   "main": "index.coffee",
-
   "scripts": {
     "test": "grunt test"
   }
