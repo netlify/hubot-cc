@@ -7,6 +7,8 @@
 # Commands:
 #   cc new-channel <alias> <users...> - Creates a new @<alias> to @mention all <users...> (space separated) in the context of the current room / channel
 #   cc new-global <alias> <users...> - Creates a new @<alias> to @mention all <users...> (space separated) in any context
+#   cc remove <alias> - Removes @<alias> from the current, and the global context
+#   cc list - Returns all defined aliases
 #
 # Notes:
 #   None
@@ -41,7 +43,7 @@ module.exports = (robot) ->
         ctx = _global
         ctx = _channels[channel] if channel
         return false unless ctx?[alias]?
-        "cc: @" + ctx[alias].join(" @")
+        "cc: @#{ctx[alias].join(' @')}"
 
     robot.brain.on "loaded", ->
         data = robot.brain.data.cc
@@ -65,6 +67,23 @@ module.exports = (robot) ->
         return res.reply ERR_NOT_ENOUGH_USERS(alias) if users.length < 2
         _addAlias(alias, users)
         res.reply "The @#{alias} alias has now been added / updated. Try it out!"
+
+    robot.respond /cc remove ([a-zA-Z0-9]+)/i, id: "cc.remove", (res) ->
+        channel = res.message.user.room
+        alias = res.match[1]
+        delete _global[alias] if _global[alias]?
+        delete _channels[channel][alias] if _channels[channel]?[alias]?
+        res.reply "Removed @#{alias} from \"#{channel}\", and the global context."
+
+    robot.respond /cc list/i, id: "cc.list", (res) ->
+        response = ""
+        globals = Object.keys(_global)
+        response += "Global alias(es): #{globals.join(', ')}\n" if globals.length > 0
+        for channel, aliases of _channels
+            locals = Object.keys(aliases)
+            response += "#{channel} alias(es): #{locals.join(', ')}\n" if locals.length > 0
+        response = "No aliases defined." if response is ""
+        res.send response
 
     robot.receiveMiddleware (ctx, next, done) ->
         if match = ctx.response.message.text?.match(/\B@([a-zA-Z0-9]+)/i)

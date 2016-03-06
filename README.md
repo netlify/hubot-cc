@@ -33,6 +33,8 @@ Command | Listener ID | Description
 --- | --- | ---
 hubot cc new-channel `alias` `users...` | `cc.new.channel` | Creates a new @`alias` to @mention all `users...` (space separated) in the context of the current room / channel
 hubot cc new-global `alias` `users...` | `cc.new.global` | Creates a new @`alias` to @mention all `users...` (space separated) in any context
+cc remove `alias` | `cc.remove` | Removes @`alias` from the current, and the global context
+cc list | `cc.list` | Returns all defined aliases
 
 ### Contexts
 

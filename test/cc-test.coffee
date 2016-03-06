@@ -18,6 +18,8 @@ describe "cc", ->
   it "registers a respond listener", ->
     expect(@robot.respond).to.have.been.calledWith(/cc new-channel ([a-zA-Z0-9]+) (.+)/i)
     expect(@robot.respond).to.have.been.calledWith(/cc new-global ([a-zA-Z0-9]+) (.+)/i)
+    expect(@robot.respond).to.have.been.calledWith(/cc remove ([a-zA-Z0-9]+)/i)
+    expect(@robot.respond).to.have.been.calledWith(/cc list/i)
 
   it "registers a listener middleware", ->
     expect(@robot.receiveMiddleware).to.have.been.called
