@@ -5,10 +5,10 @@
 #   None
 #
 # Commands:
-#   cc new-channel <alias> <users...> - Creates a new @<alias> to @mention all <users...> (space separated) in the context of the current room / channel
-#   cc new-global <alias> <users...> - Creates a new @<alias> to @mention all <users...> (space separated) in any context
-#   cc remove <alias> - Removes @<alias> from the current, and the global context
-#   cc list - Returns all defined aliases
+#   hubot cc new-channel <alias> <users...> - Creates a new @<alias> to @mention all <users...> (space separated) in the context of the current room / channel
+#   hubot cc new-global <alias> <users...> - Creates a new @<alias> to @mention all <users...> (space separated) in any context
+#   hubot cc remove <alias> - Removes @<alias> from the current, and the global context
+#   hubot cc list - Returns all defined aliases
 #
 # Notes:
 #   None
