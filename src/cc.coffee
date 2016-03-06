@@ -21,7 +21,7 @@ module.exports = (robot) ->
     _channels = {}
 
     ERR_NOT_ENOUGH_USERS = (alias) ->
-        "Please specify more than one user to be associated with @#{alias}."
+        "Please specify more than one unique user to be associated with @#{alias}."
 
     _saveAliases = ->
         robot.brain.data.cc =
@@ -31,15 +31,20 @@ module.exports = (robot) ->
         robot.brain.save()
 
     _addAlias = (alias, users, channel = false) ->
+        success = "The @#{alias} alias has now been added / updated. Try it out!"
         ctx = _global
         if channel
+            success = "The @#{alias} alias has now been added / updated for \"#{channel}\". Try it out!"
             _channels[channel] or= {}
             ctx = _channels[channel]
         robot.logger.debug "hubot-cc: creating / updating an alias (\"#{alias}\")"
-        ctx[alias] = users.filter((u) ->
-            u.trim().length > 1
+        uniqueUsers = users.filter((u, i, self) ->
+            u.trim().length > 1 and self.indexOf(u) is i
         )
+        return ERR_NOT_ENOUGH_USERS(alias) if uniqueUsers.length < 2
+        ctx[alias] = uniqueUsers
         _saveAliases()
+        success
 
     _getMentions = (alias, channel = false) ->
         ctx = _global
@@ -58,17 +63,13 @@ module.exports = (robot) ->
     robot.respond /cc new-channel ([a-zA-Z0-9]+) (.+)/i, id: "cc.new.channel", (res) ->
         channel = res.message.user.room
         alias = res.match[1]
-        users = res.match[2].split(" ")
-        return res.reply ERR_NOT_ENOUGH_USERS(alias) if users.length < 2
-        _addAlias(alias, users, channel)
-        res.reply "The @#{alias} alias has now been added / updated for \"#{channel}\". Try it out!"
+        users = res.match[2].trim().split(" ")
+        res.reply _addAlias(alias, users, channel)
 
     robot.respond /cc new-global ([a-zA-Z0-9]+) (.+)/i, id: "cc.new.global", (res) ->
         alias = res.match[1]
-        users = res.match[2].split(" ")
-        return res.reply ERR_NOT_ENOUGH_USERS(alias) if users.length < 2
-        _addAlias(alias, users)
-        res.reply "The @#{alias} alias has now been added / updated. Try it out!"
+        users = res.match[2].trim().split(" ")
+        res.reply _addAlias(alias, users)
 
     robot.respond /cc remove ([a-zA-Z0-9]+)/i, id: "cc.remove", (res) ->
         channel = res.message.user.room
