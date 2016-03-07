@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/ClaudeBot/hubot-cc.svg)](https://travis-ci.org/ClaudeBot/hubot-cc)
 [![devDependency Status](https://david-dm.org/ClaudeBot/hubot-cc/dev-status.svg)](https://david-dm.org/ClaudeBot/hubot-cc#info=devDependencies)
 
+__This script relies on a new Hubot [v2.16.0](https://github.com/github/hubot/blob/master/CHANGELOG.md#v2160) feature known as ['receive middleware'](https://github.com/github/hubot/pull/1019). It WILL NOT work on older versions of Hubot.__
+
 A Hubot script for defining aliases to easily @mention groups of people in a room or a global context.
 
 See [`src/cc.coffee`](src/cc.coffee) for full documentation.
